@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageCircle, Heart, Shield, Lightbulb, ArrowRight } from 'lucide-react';
+import { MessageCircle, Heart, Shield, Lightbulb, ArrowRight, User, Phone, ExternalLink } from 'lucide-react';
 import { WhatsAppService } from '../utils/whatsapp';
 
 interface WelcomeScreenProps {
@@ -13,6 +13,11 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat, langu
     WhatsAppService.openWhatsAppChat(undefined, language);
   };
 
+  const handleAuthClick = () => {
+    // Placeholder route for authentication
+    window.location.href = '/auth';
+  };
+
   const getContent = () => {
     const content = {
       english: {
@@ -21,11 +26,21 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat, langu
         whatsappText: 'Also available on WhatsApp ✅',
         whatsappButton: 'Chat on WhatsApp',
         startButton: 'Start Chat',
+        loginButton: 'Log In / Sign Up',
         features: [
           { icon: Heart, title: 'Disease Information', desc: 'Learn about symptoms, causes & prevention' },
           { icon: Shield, title: 'Vaccination Guide', desc: 'Get personalized vaccine schedules' },
           { icon: Lightbulb, title: 'Health Tips', desc: 'Daily wellness advice & alerts' }
-        ]
+        ],
+        footer: {
+          emergency: 'Emergency Contact',
+          ambulance: 'Ambulance: 108',
+          ambulanceInfo: 'Available 24/7 for rural & semi-urban areas',
+          credits: 'Developed by Star_Light team',
+          usefulLinks: 'Useful Links',
+          govPortal: 'Government Health Portal',
+          healthResources: 'Health Resources'
+        }
       },
       hindi: {
         title: 'आरोग्य-AI',
@@ -33,11 +48,21 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat, langu
         whatsappText: 'WhatsApp पर भी उपलब्ध ✅',
         whatsappButton: 'WhatsApp पर चैट करें',
         startButton: 'चैट शुरू करें',
+        loginButton: 'लॉग इन / साइन अप',
         features: [
           { icon: Heart, title: 'रोग की जानकारी', desc: 'लक्षण, कारण और रोकथाम के बारे में जानें' },
           { icon: Shield, title: 'टीकाकरण गाइड', desc: 'व्यक्तिगत टीका कार्यक्रम प्राप्त करें' },
           { icon: Lightbulb, title: 'स्वास्थ्य सुझाव', desc: 'दैनिक कल्याण सलाह और अलर्ट' }
-        ]
+        ],
+        footer: {
+          emergency: 'आपातकालीन संपर्क',
+          ambulance: 'एम्बुलेंस: 108',
+          ambulanceInfo: 'ग्रामीण और अर्ध-शहरी क्षेत्रों के लिए 24/7 उपलब्ध',
+          credits: 'Star_Light टीम द्वारा विकसित',
+          usefulLinks: 'उपयोगी लिंक',
+          govPortal: 'सरकारी स्वास्थ्य पोर्टल',
+          healthResources: 'स्वास्थ्य संसाधन'
+        }
       },
       odia: {
         title: 'ଆରୋଗ୍ୟ-AI',
@@ -45,21 +70,57 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat, langu
         whatsappText: 'WhatsApp ରେ ମଧ୍ୟ ଉପଲବ୍ଧ ✅',
         whatsappButton: 'WhatsApp ରେ ଚାଟ କରନ୍ତୁ',
         startButton: 'ଚାଟ ଆରମ୍ଭ କରନ୍ତୁ',
+        loginButton: 'ଲଗ ଇନ / ସାଇନ ଅପ',
         features: [
           { icon: Heart, title: 'ରୋଗ ସୂଚନା', desc: 'ଲକ୍ଷଣ, କାରଣ ଏବଂ ପ୍ରତିରୋଧ ବିଷୟରେ ଜାଣନ୍ତୁ' },
           { icon: Shield, title: 'ଟିକାକରଣ ଗାଇଡ', desc: 'ବ୍ୟକ୍ତିଗତ ଟିକା କାର୍ଯ୍ୟସୂଚୀ ପାଆନ୍ତୁ' },
           { icon: Lightbulb, title: 'ସ୍ୱାସ୍ଥ୍ୟ ପରାମର୍ଶ', desc: 'ଦୈନିକ ସୁସ୍ଥତା ପରାମର୍ଶ ଏବଂ ସତର୍କତା' }
-        ]
+        ],
+        footer: {
+          emergency: 'ଜରୁରୀକାଳୀନ ଯୋଗାଯୋଗ',
+          ambulance: 'ଆମ୍ବୁଲାନ୍ସ: 108',
+          ambulanceInfo: 'ଗ୍ରାମାଞ୍ଚଳ ଏବଂ ଅର୍ଦ୍ଧ-ସହରାଞ୍ଚଳ ପାଇଁ 24/7 ଉପଲବ୍ଧ',
+          credits: 'Star_Light ଟିମ୍ ଦ୍ୱାରା ବିକଶିତ',
+          usefulLinks: 'ଉପଯୋଗୀ ଲିଙ୍କ',
+          govPortal: 'ସରକାରୀ ସ୍ୱାସ୍ଥ୍ୟ ପୋର୍ଟାଲ',
+          healthResources: 'ସ୍ୱାସ୍ଥ୍ୟ ସମ୍ବଳ'
+        }
       }
     };
 
     return content[language as keyof typeof content] || content.english;
   };
 
-  const { title, tagline, whatsappText, whatsappButton, startButton, features } = getContent();
+  const { title, tagline, whatsappText, whatsappButton, startButton, loginButton, features, footer } = getContent();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-blue-100 flex flex-col">
+      {/* Navigation Bar */}
+      <nav className="bg-white/80 backdrop-blur-sm shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <div className="flex items-center">
+              <div className="flex-shrink-0 flex items-center">
+                <Heart className="w-8 h-8 text-blue-600 mr-2" />
+                <span className="text-xl font-bold text-gray-900">{title}</span>
+              </div>
+            </div>
+            
+            {/* Login Button */}
+            <div className="flex items-center">
+              <button
+                onClick={handleAuthClick}
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+              >
+                <User className="w-4 h-4 mr-2" />
+                {loginButton}
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       {/* Hero Section */}
       <div className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="max-w-4xl mx-auto text-center">
@@ -106,37 +167,117 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat, langu
             <ArrowRight className="w-5 h-5 ml-2" />
           </button>
 
-          {/* Features */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <div
-                  key={index}
-                  className="bg-white/70 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                >
-                  <div className="flex flex-col items-center text-center">
-                    <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center mb-4">
-                      <Icon className="w-6 h-6 text-white" />
+          {/* Features - Fixed Container */}
+          <div className="mt-16 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {features.map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <div
+                    key={index}
+                    className="bg-white/70 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                  >
+                    <div className="flex flex-col items-center text-center">
+                      <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center mb-4">
+                        <Icon className="w-6 h-6 text-white" />
+                      </div>
+                      <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                      <p className="text-sm text-gray-600">{feature.desc}</p>
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                    <p className="text-sm text-gray-600">{feature.desc}</p>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Footer */}
-      <div className="text-center py-6 px-4">
-        <p className="text-sm text-gray-500">
-          {language === 'hindi' ? 'आपका विश्वसनीय स्वास्थ्य साथी' :
-           language === 'odia' ? 'ଆପଣଙ୍କର ବିଶ୍ୱସ୍ତ ସ୍ୱାସ୍ଥ୍ୟ ସାଥୀ' :
-           'Your trusted health companion'}
-        </p>
-      </div>
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Emergency Contact */}
+            <div className="text-center md:text-left">
+              <h3 className="text-lg font-semibold mb-4 flex items-center justify-center md:justify-start">
+                <Phone className="w-5 h-5 mr-2 text-red-400" />
+                {footer.emergency}
+              </h3>
+              <div className="space-y-2">
+                <p className="text-red-400 font-bold text-xl">{footer.ambulance}</p>
+                <p className="text-gray-300 text-sm">{footer.ambulanceInfo}</p>
+              </div>
+            </div>
+
+            {/* Useful Links */}
+            <div className="text-center md:text-left">
+              <h3 className="text-lg font-semibold mb-4 flex items-center justify-center md:justify-start">
+                <ExternalLink className="w-5 h-5 mr-2 text-blue-400" />
+                {footer.usefulLinks}
+              </h3>
+              <div className="space-y-2">
+                <a
+                  href="https://www.mohfw.gov.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-blue-400 hover:text-blue-300 transition-colors duration-200"
+                >
+                  {footer.govPortal}
+                </a>
+                <a
+                  href="https://www.nhp.gov.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-blue-400 hover:text-blue-300 transition-colors duration-200"
+                >
+                  National Health Portal
+                </a>
+                <a
+                  href="https://www.cowin.gov.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-blue-400 hover:text-blue-300 transition-colors duration-200"
+                >
+                  CoWIN Portal
+                </a>
+              </div>
+            </div>
+
+            {/* Credits */}
+            <div className="text-center md:text-left">
+              <h3 className="text-lg font-semibold mb-4 flex items-center justify-center md:justify-start">
+                <Heart className="w-5 h-5 mr-2 text-pink-400" />
+                {language === 'hindi' ? 'टीम' : language === 'odia' ? 'ଟିମ୍' : 'Team'}
+              </h3>
+              <div className="space-y-2">
+                <p className="text-pink-400 font-semibold">{footer.credits}</p>
+                <p className="text-gray-300 text-sm">
+                  {language === 'hindi' ? 'ग्रामीण स्वास्थ्य सेवा के लिए समर्पित' :
+                   language === 'odia' ? 'ଗ୍ରାମୀଣ ସ୍ୱାସ୍ଥ୍ୟ ସେବା ପାଇଁ ସମର୍ପିତ' :
+                   'Dedicated to rural healthcare'}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+              <p className="text-gray-400 text-sm">
+                © 2024 {title}. {language === 'hindi' ? 'सभी अधिकार सुरक्षित।' :
+                                language === 'odia' ? 'ସମସ୍ତ ଅଧିକାର ସଂରକ୍ଷିତ।' :
+                                'All rights reserved.'}
+              </p>
+              <div className="flex items-center space-x-4">
+                <span className="text-gray-400 text-sm">
+                  {language === 'hindi' ? 'आपका विश्वसनीय स्वास्थ्य साथी' :
+                   language === 'odia' ? 'ଆପଣଙ୍କର ବିଶ୍ୱସ୍ତ ସ୍ୱାସ୍ଥ୍ୟ ସାଥୀ' :
+                   'Your trusted health companion'}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
