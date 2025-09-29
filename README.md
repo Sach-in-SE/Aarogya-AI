@@ -31,11 +31,17 @@ A comprehensive multilingual AI chatbot system for disease awareness and prevent
    - Enable WhatsApp Sandbox or verify your WhatsApp Business number
 
 2. **Environment Variables**:
-   Create a `.env` file in the root directory:
+   Create a `.env` file in the root directory and add the following variables. Do not commit real secrets.
    ```env
-   VITE_TWILIO_ACCOUNT_SID=ACdd8aa2d1e21a02b1a3e8858fdf00e223
+   # Frontend (Vite) env vars
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+   VITE_TWILIO_ACCOUNT_SID=your_twilio_account_sid_here
    VITE_TWILIO_AUTH_TOKEN=your_auth_token_here
-   VITE_TWILIO_WHATSAPP_NUMBER=919917250558
+   VITE_TWILIO_WHATSAPP_NUMBER=your_whatsapp_number_here
+
+   # Serverless (Vercel) env vars for webhook verification
+   TWILIO_ACCOUNT_SID=your_twilio_account_sid_here
+   TWILIO_AUTH_TOKEN=your_auth_token_here
    ```
 
 3. **WhatsApp Sandbox Configuration**:
@@ -112,23 +118,10 @@ A comprehensive multilingual AI chatbot system for disease awareness and prevent
 
 | Variable | Description | Example |
 |----------|-------------|---------|
+| `VITE_SUPABASE_ANON_KEY` | Supabase anon key | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtndHlob2tvdmlxZnhseW5udGlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxMzA1MzksImV4cCI6MjA3NDcwNjUzOX0.P7rrCMqe_2N1k-4Nc_q2AA2YarBIu-TwGe87Y5LJ8H8` |
 | `VITE_TWILIO_ACCOUNT_SID` | Twilio Account SID | `ACdd8aa2d1e21a02b1a3e8858fdf00e223` |
-| `VITE_TWILIO_AUTH_TOKEN` | Twilio Auth Token | `your_auth_token_here` |
-| `VITE_TWILIO_WHATSAPP_NUMBER` | WhatsApp Business Number | `919917250558` |
-
-## 🌐 Deployment
-
-### Vercel Deployment
-1. Connect your GitHub repository to Vercel
-2. Add environment variables in Vercel dashboard
-3. Deploy automatically on push to main branch
-
-### Netlify Deployment
-1. Connect repository to Netlify
-2. Set build command: `npm run build`
-3. Set publish directory: `dist`
-4. Add environment variables in site settings
-
+| `VITE_TWILIO_AUTH_TOKEN` | Twilio Auth Token | `9173269b214fcdc86c6ae1bf0caa5ebc` |
+| `VITE_TWILIO_WHATSAPP_NUMBER` | WhatsApp Business Number | `9917250558` |
 ## 🔒 Security
 
 - Environment variables for sensitive credentials
