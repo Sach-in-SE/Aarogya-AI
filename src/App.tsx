@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { WelcomeScreen } from './components/WelcomeScreen';
 import { ChatbotScreen } from './components/ChatbotScreen';
-import { LanguageSelector } from './components/LanguageSelector';
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState<'welcome' | 'chat'>('welcome');
@@ -27,16 +26,6 @@ function App() {
 
   return (
     <div className="relative">
-      {/* Language Selector - Fixed Position */}
-      {currentScreen === 'welcome' && (
-        <div className="fixed top-4 right-4 z-50">
-          <LanguageSelector
-            currentLanguage={language}
-            onLanguageChange={setLanguage}
-          />
-        </div>
-      )}
-
       {/* Screen Transition */}
       <div className={`transition-all duration-500 ease-in-out ${
         currentScreen === 'welcome' ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full absolute inset-0'
@@ -45,6 +34,7 @@ function App() {
           <WelcomeScreen 
             onStartChat={handleStartChat}
             language={language}
+            onLanguageChange={setLanguage}
           />
         )}
       </div>

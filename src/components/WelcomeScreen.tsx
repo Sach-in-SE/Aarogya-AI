@@ -1,13 +1,15 @@
 import React from 'react';
 import { MessageCircle, Heart, Shield, Lightbulb, ArrowRight, User, Phone, ExternalLink } from 'lucide-react';
 import { WhatsAppService } from '../utils/whatsapp';
+import { LanguageSelector } from './LanguageSelector';
 
 interface WelcomeScreenProps {
   onStartChat: () => void;
   language: string;
+  onLanguageChange: (language: string) => void;
 }
 
-export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat, language }) => {
+export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat, language, onLanguageChange }) => {
   const handleWhatsAppClick = () => {
     // Use WhatsApp service to open chat with localized message
     WhatsAppService.openWhatsAppChat(undefined, language);
@@ -107,16 +109,33 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat, langu
               </div>
             </div>
             
-            {/* Login Button */}
-            <div className="flex items-center">
+            {/* Right side - Language Selector and Login Button */}
+            <div className="flex items-center space-x-4">
+              {/* Language Selector */}
+              <div className="hidden sm:block">
+                <LanguageSelector
+                  currentLanguage={language}
+                  onLanguageChange={onLanguageChange}
+                />
+              </div>
+              
+              {/* Login Button */}
               <button
                 onClick={handleAuthClick}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+                className="inline-flex items-center px-3 py-2 sm:px-4 border border-transparent text-xs sm:text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
               >
-                <User className="w-4 h-4 mr-2" />
+                <User className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                 {loginButton}
               </button>
             </div>
+          </div>
+          
+          {/* Mobile Language Selector */}
+          <div className="sm:hidden pb-3 border-t border-gray-200 mt-3 pt-3">
+            <LanguageSelector
+              currentLanguage={language}
+              onLanguageChange={onLanguageChange}
+            />
           </div>
         </div>
       </nav>
@@ -166,29 +185,6 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat, langu
             {startButton}
             <ArrowRight className="w-5 h-5 ml-2" />
           </button>
-
-          {/* Features - Fixed Container */}
-          <div className="mt-16 max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {features.map((feature, index) => {
-                const Icon = feature.icon;
-                return (
-                  <div
-                    key={index}
-                    className="bg-white/70 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                  >
-                    <div className="flex flex-col items-center text-center">
-                      <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center mb-4">
-                        <Icon className="w-6 h-6 text-white" />
-                      </div>
-                      <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                      <p className="text-sm text-gray-600">{feature.desc}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
         </div>
       </div>
 
@@ -202,17 +198,29 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat, langu
                 <Phone className="w-5 h-5 mr-2 text-red-400" />
                 {footer.emergency}
               </h3>
-              <div className="space-y-2">
-                <p className="text-red-400 font-bold text-xl">{footer.ambulance}</p>
-                <p className="text-gray-300 text-sm">{footer.ambulanceInfo}</p>
+              <div className="space-y-3">
+                <div>
+                  <p className="text-red-400 font-bold text-lg">National Emergency: 108</p>
+                  <p className="text-gray-300 text-sm">24/7 Emergency Services</p>
+                </div>
+                <div>
+                  <p className="text-red-400 font-bold text-lg">Odisha Ambulance: 102</p>
+                  <p className="text-gray-300 text-sm">State Emergency Services</p>
+                </div>
+                <div>
+                  <p className="text-red-400 font-bold text-lg">Health Helpline: 104</p>
+                  <p className="text-gray-300 text-sm">Medical Consultation</p>
+                </div>
               </div>
             </div>
 
-            {/* Useful Links */}
+            {/* Official Data Sources */}
             <div className="text-center md:text-left">
               <h3 className="text-lg font-semibold mb-4 flex items-center justify-center md:justify-start">
                 <ExternalLink className="w-5 h-5 mr-2 text-blue-400" />
-                {footer.usefulLinks}
+                {language === 'hindi' ? 'आधिकारिक डेटा स्रोत' :
+                 language === 'odia' ? 'ସରକାରୀ ତଥ୍ୟ ଉତ୍ସ' :
+                 'Official Data Sources'}
               </h3>
               <div className="space-y-2">
                 <a
@@ -221,7 +229,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat, langu
                   rel="noopener noreferrer"
                   className="block text-blue-400 hover:text-blue-300 transition-colors duration-200"
                 >
-                  {footer.govPortal}
+                  Ministry of Health & Family Welfare
                 </a>
                 <a
                   href="https://www.nhp.gov.in/"
@@ -238,6 +246,14 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat, langu
                   className="block text-blue-400 hover:text-blue-300 transition-colors duration-200"
                 >
                   CoWIN Portal
+                </a>
+                <a
+                  href="https://health.odisha.gov.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-blue-400 hover:text-blue-300 transition-colors duration-200"
+                >
+                  Odisha Health Department
                 </a>
               </div>
             </div>
