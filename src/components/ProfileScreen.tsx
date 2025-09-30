@@ -169,16 +169,28 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ language, onBack }
         .eq('id', user?.id)
         .single();
 
-      if (error && error.code !== 'PGRST116' && error.code !== 'PGRST205') {
+      if (error && error.code !== 'PGRST116') {
         console.error('Error fetching profile:', error);
-        return;
+        // If table doesn't exist, create a default profile
+        if (error.code === 'PGRST205') {
+          const newProfile = {
+            id: user?.id,
+            email: user?.email,
+            full_name: user?.user_metadata?.full_name || '',
+            created_at: new Date().toISOString()
+          };
+          setProfile(newProfile as UserProfile);
+          setEditForm(newProfile);
+          setLoading(false);
+          return;
+        }
       }
 
       if (data && !error) {
         setProfile(data);
         setEditForm(data);
       } else {
-        // Create initial profile for new users or when no profile exists
+        // Create initial profile for new users
         const newProfile = {
           id: user?.id,
           email: user?.email,
@@ -190,6 +202,15 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ language, onBack }
       }
     } catch (error) {
       console.error('Error:', error);
+      // Fallback: create default profile
+      const newProfile = {
+        id: user?.id,
+        email: user?.email,
+        full_name: user?.user_metadata?.full_name || '',
+        created_at: new Date().toISOString()
+      };
+      setProfile(newProfile as UserProfile);
+      setEditForm(newProfile);
     } finally {
       setLoading(false);
     }
@@ -203,13 +224,13 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ language, onBack }
         .eq('user_id', user?.id)
         .order('date_administered', { ascending: false });
 
-      if (error && error.code !== 'PGRST205') {
+      if (error) {
+        // If table doesn't exist, just set empty array
+        if (error.code === 'PGRST205') {
+          setVaccines([]);
+          return;
+        }
         console.error('Error fetching vaccines:', error);
-        return;
-      }
-
-      // If table doesn't exist, set empty array
-      if (error && error.code === 'PGRST205') {
         setVaccines([]);
         return;
       }
@@ -217,6 +238,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ language, onBack }
       setVaccines(data || []);
     } catch (error) {
       console.error('Error:', error);
+      setVaccines([]);
     }
   };
 

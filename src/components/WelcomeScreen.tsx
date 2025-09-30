@@ -6,11 +6,12 @@ import { AuthModal } from './AuthModal';
 
 interface WelcomeScreenProps {
   onStartChat: () => void;
+  onAuthSuccess: () => void;
   language: string;
   onLanguageChange: (language: string) => void;
 }
 
-export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat, language, onLanguageChange }) => {
+export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat, onAuthSuccess, language, onLanguageChange }) => {
   const [isAuthModalOpen, setIsAuthModalOpen] = React.useState(false);
 
   const handleWhatsAppClick = () => {
@@ -301,6 +302,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat, langu
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
+        onAuthSuccess={onAuthSuccess}
         language={language}
       />
     </div>

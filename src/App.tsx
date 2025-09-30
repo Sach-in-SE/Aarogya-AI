@@ -9,13 +9,6 @@ function App() {
   const [currentScreen, setCurrentScreen] = useState<'welcome' | 'chat' | 'profile'>('welcome');
   const [language, setLanguage] = useState('english');
 
-  // Redirect to profile after login/signup
-  useEffect(() => {
-    if (user && currentScreen === 'welcome') {
-      setCurrentScreen('profile');
-    }
-  }, [user, currentScreen]);
-
   useEffect(() => {
     // Update document title based on language
     const titles = {
@@ -38,6 +31,10 @@ function App() {
     setCurrentScreen('profile');
   };
 
+  const handleAuthSuccess = () => {
+    setCurrentScreen('profile');
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center">
@@ -55,6 +52,7 @@ function App() {
         {currentScreen === 'welcome' && (
           <WelcomeScreen 
             onStartChat={handleStartChat}
+            onAuthSuccess={handleAuthSuccess}
             language={language}
             onLanguageChange={setLanguage}
           />

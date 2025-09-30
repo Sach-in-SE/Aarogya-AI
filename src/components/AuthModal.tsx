@@ -5,10 +5,11 @@ import { supabase } from '../lib/supabase';
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onAuthSuccess: () => void;
   language: string;
 }
 
-export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, language }) => {
+export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess, language }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -102,7 +103,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, language 
         setSuccess(content.loginSuccess);
         setTimeout(() => {
           onClose();
-          // You can redirect or update app state here
+          onAuthSuccess();
         }, 2000);
       } else {
         const { data, error } = await supabase.auth.signUp({
@@ -119,8 +120,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, language 
 
         setSuccess(content.signupSuccess);
         setTimeout(() => {
-          setIsLogin(true);
-          setSuccess('');
+          onClose();
+          onAuthSuccess();
         }, 3000);
       }
     } catch (error: any) {
