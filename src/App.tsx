@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { WelcomeScreen } from './components/WelcomeScreen';
 import { ChatbotScreen } from './components/ChatbotScreen';
+import { ProfileScreen } from './components/ProfileScreen';
+import { useAuth } from './hooks/useAuth';
 
 function App() {
-  const [currentScreen, setCurrentScreen] = useState<'welcome' | 'chat'>('welcome');
+  const { user, loading } = useAuth();
+  const [currentScreen, setCurrentScreen] = useState<'welcome' | 'chat' | 'profile'>('welcome');
   const [language, setLanguage] = useState('english');
+
+  // Redirect to profile after login/signup
+  useEffect(() => {
+    if (user && currentScreen === 'welcome') {
+      setCurrentScreen('profile');
+    }
+  }, [user, currentScreen]);
 
   useEffect(() => {
     // Update document title based on language
@@ -24,11 +34,23 @@ function App() {
     setCurrentScreen('welcome');
   };
 
+  const handleGoToProfile = () => {
+    setCurrentScreen('profile');
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative">
       {/* Screen Transition */}
       <div className={`transition-all duration-500 ease-in-out ${
-        currentScreen === 'welcome' ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full absolute inset-0'
+        currentScreen === 'welcome' ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full absolute inset-0 pointer-events-none'
       }`}>
         {currentScreen === 'welcome' && (
           <WelcomeScreen 
@@ -40,10 +62,21 @@ function App() {
       </div>
 
       <div className={`transition-all duration-500 ease-in-out ${
-        currentScreen === 'chat' ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full absolute inset-0'
+        currentScreen === 'chat' ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full absolute inset-0 pointer-events-none'
       }`}>
         {currentScreen === 'chat' && (
           <ChatbotScreen 
+            language={language}
+            onBack={handleBackToWelcome}
+          />
+        )}
+      </div>
+
+      <div className={`transition-all duration-500 ease-in-out ${
+        currentScreen === 'profile' ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full absolute inset-0 pointer-events-none'
+      }`}>
+        {currentScreen === 'profile' && (
+          <ProfileScreen 
             language={language}
             onBack={handleBackToWelcome}
           />
