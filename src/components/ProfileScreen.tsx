@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { User, Edit3, Save, X, ArrowLeft, Heart, Shield, AlertTriangle, Phone, MapPin, Droplets, Calendar, Plus } from 'lucide-react';
+import { User, CreditCard as Edit3, Save, X, ArrowLeft, Heart, Shield, AlertTriangle, Phone, MapPin, Droplets, Calendar, Plus } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../hooks/useAuth';
 import { HealthAlerts } from './HealthAlerts';
