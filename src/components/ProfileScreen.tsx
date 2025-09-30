@@ -169,9 +169,21 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ language, onBack }
         .eq('id', user?.id)
         .single();
 
-      if (error && error.code !== 'PGRST116') {
+      if (error && error.code !== 'PGRST116' && error.code !== 'PGRST205') {
         console.error('Error fetching profile:', error);
-        return;
+        // If table doesn't exist, create a default profile
+        if (error.code === 'PGRST205') {
+          const newProfile = {
+            id: user?.id,
+            email: user?.email,
+            full_name: user?.user_metadata?.full_name || '',
+            created_at: new Date().toISOString()
+          };
+          setProfile(newProfile as UserProfile);
+          setEditForm(newProfile);
+          setLoading(false);
+          return;
+        }
       }
 
       if (data) {
@@ -203,8 +215,14 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ language, onBack }
         .eq('user_id', user?.id)
         .order('date_administered', { ascending: false });
 
-      if (error) {
+      if (error && error.code !== 'PGRST205') {
         console.error('Error fetching vaccines:', error);
+        return;
+      }
+
+      // If table doesn't exist, set empty array
+      if (error && error.code === 'PGRST205') {
+        setVaccines([]);
         return;
       }
 
