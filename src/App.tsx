@@ -34,10 +34,12 @@ function App() {
   return (
     <div className="relative w-full h-screen">
       {/* Welcome Screen */}
-      <div className={`absolute inset-0 transition-opacity duration-300 ${
-        currentScreen === 'welcome' ? 'opacity-100 z-20 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
-      }`}>
-        <WelcomeScreen 
+      <div
+        className={`absolute inset-0 transition-opacity duration-300 ${
+          currentScreen === 'welcome' ? 'opacity-100 z-20 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
+        }`}
+      >
+        <WelcomeScreen
           onStartChat={handleStartChat}
           onAuthSuccess={handleAuthSuccess}
           language={language}
@@ -46,15 +48,30 @@ function App() {
       </div>
 
       {/* Chatbot Screen */}
-      <div className={`absolute inset-0 transition-opacity duration-300 ${
-        currentScreen === 'chat' ? 'opacity-100 z-20 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
-      }`}>
-        <ChatbotScreen 
+      <div
+        className={`absolute inset-0 transition-opacity duration-300 ${
+          currentScreen === 'chat' ? 'opacity-100 z-20 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
+        }`}
+      >
+        <ChatbotScreen
           language={language}
           onBack={handleBackToWelcome}
         />
       </div>
 
       {/* Profile Screen */}
-      <div className={`absolute inset-0 transition-opacity duration-300 ${
-        currentScreen === 'profile' ? 'opacity-100 z-20 pointer-
+      <div
+        className={`absolute inset-0 transition-opacity duration-300 ${
+          currentScreen === 'profile' ? 'opacity-100 z-20 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
+        }`}
+      >
+        <ProfileScreen
+          language={language}
+          onBack={handleBackToWelcome}
+        />
+      </div>
+    </div>
+  );
+}
+
+export default App;
