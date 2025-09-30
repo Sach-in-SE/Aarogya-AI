@@ -171,26 +171,14 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ language, onBack }
 
       if (error && error.code !== 'PGRST116' && error.code !== 'PGRST205') {
         console.error('Error fetching profile:', error);
-        // If table doesn't exist, create a default profile
-        if (error.code === 'PGRST205') {
-          const newProfile = {
-            id: user?.id,
-            email: user?.email,
-            full_name: user?.user_metadata?.full_name || '',
-            created_at: new Date().toISOString()
-          };
-          setProfile(newProfile as UserProfile);
-          setEditForm(newProfile);
-          setLoading(false);
-          return;
-        }
+        return;
       }
 
-      if (data) {
+      if (data && !error) {
         setProfile(data);
         setEditForm(data);
       } else {
-        // Create initial profile
+        // Create initial profile for new users or when no profile exists
         const newProfile = {
           id: user?.id,
           email: user?.email,
