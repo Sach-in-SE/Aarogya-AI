@@ -2,6 +2,7 @@ import React from 'react';
 import { MessageCircle, Heart, Shield, Lightbulb, ArrowRight, User, Phone, ExternalLink } from 'lucide-react';
 import { WhatsAppService } from '../utils/whatsapp';
 import { LanguageSelector } from './LanguageSelector';
+import { AuthModal } from './AuthModal';
 
 interface WelcomeScreenProps {
   onStartChat: () => void;
@@ -10,14 +11,15 @@ interface WelcomeScreenProps {
 }
 
 export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat, language, onLanguageChange }) => {
+  const [isAuthModalOpen, setIsAuthModalOpen] = React.useState(false);
+
   const handleWhatsAppClick = () => {
     // Use WhatsApp service to open chat with localized message
     WhatsAppService.openWhatsAppChat(undefined, language);
   };
 
   const handleAuthClick = () => {
-    // Placeholder route for authentication
-    window.location.href = '/auth';
+    setIsAuthModalOpen(true);
   };
 
   const getContent = () => {
@@ -294,6 +296,13 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat, langu
           </div>
         </div>
       </footer>
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        language={language}
+      />
     </div>
   );
 };
