@@ -85,6 +85,38 @@ A comprehensive multilingual AI chatbot system for disease awareness and prevent
    npm run build
    ```
 
+## 🚀 Deployment
+
+### Deploy to Netlify
+
+1. **Connect your repository** to Netlify
+2. **Set build settings**:
+   - Build command: `npm run build`
+   - Publish directory: `dist`
+3. **Add environment variables** in Netlify dashboard:
+   - `VITE_SUPABASE_URL`: `https://kgtyhokoviqfxlynntis.supabase.co`
+   - `VITE_SUPABASE_ANON_KEY`: Your Supabase anon key
+   - `VITE_TWILIO_WHATSAPP_NUMBER`: Your WhatsApp number (optional)
+4. **Deploy**: Netlify will automatically build and deploy
+
+### Deploy to Vercel
+
+1. **Connect your repository** to Vercel
+2. **Framework preset**: Vite (auto-detected)
+3. **Add environment variables** in Vercel dashboard:
+   - `VITE_SUPABASE_URL`: `https://kgtyhokoviqfxlynntis.supabase.co`
+   - `VITE_SUPABASE_ANON_KEY`: Your Supabase anon key
+   - `VITE_TWILIO_WHATSAPP_NUMBER`: Your WhatsApp number (optional)
+4. **Deploy**: Vercel will automatically build and deploy
+
+### Environment Variables Required for Production
+
+```env
+VITE_SUPABASE_URL=https://kgtyhokoviqfxlynntis.supabase.co
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+VITE_TWILIO_WHATSAPP_NUMBER=your_whatsapp_number_here
+```
+
 ## 📱 Usage
 
 ### Web Interface
